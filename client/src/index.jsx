@@ -10,12 +10,35 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
+    this.search = this.search.bind(this);
+    this.getAll = this.getAll.bind(this);
+  }
 
+  componentDidMount() {
+    this.getAll();
   }
 
   search (term) {
     console.log(`${term} was searched`);
-    // TODO
+    // TODO 
+    $.ajax({
+      type: "POST",
+      url: '/repos',
+      data: term,
+      success: (data) => {
+        console.log('term was posted!', data);
+      }
+    });
+  }
+
+  getAll() {
+    $.ajax({
+      type: "GET",
+      url: '/repos',
+      success: (data) => {
+        this.setState({ repos : data });
+      }
+    })
   }
 
   render () {
